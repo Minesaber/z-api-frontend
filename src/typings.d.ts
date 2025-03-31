@@ -20,5 +20,8 @@ declare module 'bizcharts-plugin-slider';
 declare const REACT_APP_ENV: 'test' | 'dev' | 'pre' | false;
 
 interface InitialState {
+  settings?: Partial<LayoutSettings>;
   currentUser?: API.UserVO;
+  fetchUserInfo?: () => Promise<API.LoginUserVO | undefined>;
+  loading?: boolean;
 }

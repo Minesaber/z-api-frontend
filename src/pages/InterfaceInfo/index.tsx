@@ -15,11 +15,7 @@ import { Button, Drawer, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
-import {
-  listInterfaceInfoByPageUsingGet,
-  listInterfaceInfoUsingGet,
-} from '@/services/z-api-backend/interfaceInfoController';
-import { SortOrder } from 'antd/es/table/interface';
+import { listInterfaceInfoByPageUsingGet } from '@/services/z-api-backend/interfaceInfoController';
 
 const handleAdd = async (fields: API.RuleListItem) => {
   const hide = message.loading('正在添加');
@@ -160,7 +156,7 @@ const TableList: React.FC = () => {
       <ProTable<API.RuleListItem, API.PageParams>
         headerTitle={'查询表格'}
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="id"
         search={{
           labelWidth: 120,
         }}

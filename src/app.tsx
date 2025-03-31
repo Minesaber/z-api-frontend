@@ -2,26 +2,46 @@ import { AvatarDropdown, AvatarName, Footer, Question } from '@/components';
 import { LinkOutlined } from '@ant-design/icons';
 import { SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
+import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { history, Link } from '@umijs/max';
 import { requestConfig } from './requestConfig';
 import { getLoginUserUsingGet } from '@/services/z-api-backend/userController';
+import defaultSettings from '../config/defaultSettings';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
-export async function getInitialState(): Promise<InitialState> {
-  const state: InitialState = {
-    currentUser: undefined,
-  };
-  try {
-    const res = await getLoginUserUsingGet();
-    if (res.data) {
-      state.currentUser = res.data;
+export async function getInitialState(): Promise<{
+  settings?: Partial<LayoutSettings>;
+  currentUser?: API.UserVO;
+  loading?: boolean;
+  fetchUserInfo?: () => Promise<API.UserVO | undefined>;
+}> {
+  const fetchUserInfo = async () => {
+    try {
+      const res = await getLoginUserUsingGet({
+        skipErrorHandler: true,
+      });
+      return res.data;
+    } catch (error) {
+      history.push(loginPath);
     }
-  } catch (error) {
-    history.push(loginPath);
+    return undefined;
+  };
+  // 如果不是登录页面，执行
+  const { location } = history;
+  if (location.pathname !== loginPath) {
+    const currentUser = await fetchUserInfo();
+    return {
+      fetchUserInfo,
+      currentUser,
+      settings: defaultSettings as Partial<LayoutSettings>,
+    };
   }
-  return state;
+  return {
+    fetchUserInfo,
+    settings: defaultSettings as Partial<LayoutSettings>,
+  };
 }
 
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
@@ -92,6 +112,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         </>
       );
     },
+    ...initialState?.settings,
   };
 };
 

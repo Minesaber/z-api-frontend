@@ -100,9 +100,13 @@ const Login: React.FC = () => {
       // 登录
       const res = await userLoginUsingPost(values);
       if (res.data) {
+        const defaultLoginSuccessMessage = '登录成功！';
+        message.success(defaultLoginSuccessMessage);
         setInitialState({
           currentUser: res.data,
         });
+      } else {
+        message.error('用户名或密码错误');
       }
     } catch (error) {
       const defaultLoginFailureMessage = '登录失败，请重试！';
@@ -110,6 +114,7 @@ const Login: React.FC = () => {
       message.error(defaultLoginFailureMessage);
     }
   };
+
   const { status, type: loginType } = userLoginState;
   return (
     <div className={styles.container}>
@@ -130,8 +135,8 @@ const Login: React.FC = () => {
             maxWidth: '75vw',
           }}
           logo={<img alt="logo" src="/logo.svg" />}
-          title="Ant Design"
-          subTitle={'Ant Design 是西湖区最具影响力的 Web 设计规范'}
+          title="ZAPI "
+          subTitle={'ZAPI 管理平台'}
           initialValues={{
             autoLogin: true,
           }}
