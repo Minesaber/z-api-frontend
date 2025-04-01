@@ -79,8 +79,8 @@ export const requestConfig: RequestConfig = {
   responseInterceptors: [
     (response) => {
       const { data } = response as unknown as ResponseStructure;
-      if (data?.success === false) {
-        message.error('请求失败！');
+      if (data?.code !== 0) {
+        throw new Error(data.message);
       }
       return response;
     },

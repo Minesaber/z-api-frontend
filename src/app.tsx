@@ -1,11 +1,11 @@
 import { AvatarDropdown, AvatarName, Footer, Question } from '@/components';
 import { LinkOutlined } from '@ant-design/icons';
 import { SettingDrawer } from '@ant-design/pro-components';
+import { getLoginUserUsingGet } from '@/services/z-api-backend/userController';
 import type { RunTimeLayoutConfig } from '@umijs/max';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { history, Link } from '@umijs/max';
 import { requestConfig } from './requestConfig';
-import { getLoginUserUsingGet } from '@/services/z-api-backend/userController';
 import defaultSettings from '../config/defaultSettings';
 
 const isDev = process.env.NODE_ENV === 'development';
